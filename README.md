@@ -105,17 +105,6 @@
 [TOOL]     Git, Github Action, NAVER Cloud Platform, Visual Studio Code
 ```
 
-## 데이터 베이스
-<p align="center">
-  <img width="808" height="373" alt="image" src="https://github.com/user-attachments/assets/955b76fb-05e8-495c-8ff7-4edb69503571" />
-</p>
-
-
-## 프로세스 흐름도 
-<p align="center">
-  <img  width="910" height="526" alt="image" src="https://github.com/user-attachments/assets/31db83e3-f5d1-4e46-89d3-33f1ec0844ba" />
-</p>
-
 ---
 
 <p align="center">

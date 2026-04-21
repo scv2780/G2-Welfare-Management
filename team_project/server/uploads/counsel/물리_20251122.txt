@@ -1,0 +1,245 @@
+USE dev;
+
+-- =========================================================
+-- tables : survey_template / survey_template / survey_section / survey_subsection / survey_item / survey_submission 
+-- / survey_answer / counsel_note / case_priority / support_plan / support_plan_item / support_result / support_result_item / 
+-- =========================================================
+
+----------------------------------------------------------
+-- 1) 조사지 템플릿
+----------------------------------------------------------
+CREATE TABLE survey_template (
+  template_code INT AUTO_INCREMENT PRIMARY KEY,
+  version_no    VARCHAR(10) NOT NULL,
+  status        VARCHAR(10),
+  created_by    INT,             -- FK -> users(user_code)
+  created_at    DATE
+);
+
+----------------------------------------------------------
+-- 2) 조사지 템플릿 버전
+----------------------------------------------------------
+CREATE TABLE survey_template_ver (
+  template_ver_code  INT AUTO_INCREMENT PRIMARY KEY,
+  template_code      INT,        -- FK -> survey_template(template_code)
+  version_detail_no  VARCHAR(10)  NOT NULL,
+  effective_from     DATE,
+  effective_to       DATE,
+  is_current         CHAR(1) CHECK (is_current IN ('Y','N')),
+  created_by         INT,        -- FK -> users(user_code)
+  created_at         DATE
+);
+
+----------------------------------------------------------
+-- 3) 조사지 항목(섹션)
+----------------------------------------------------------
+CREATE TABLE survey_section (
+  section_code       INT AUTO_INCREMENT PRIMARY KEY,
+  template_ver_code  INT,        -- FK -> survey_template_ver(template_ver_code)
+  section_title      VARCHAR(200),
+  section_desc       VARCHAR(500)
+);
+
+----------------------------------------------------------
+-- 4) 조사지 세부항목(서브섹션)
+----------------------------------------------------------
+CREATE TABLE survey_subsection (
+  subsection_code  INT AUTO_INCREMENT PRIMARY KEY,
+  section_code     INT,          -- FK -> survey_section(section_code)
+  subsection_title VARCHAR(200),
+  subsection_desc  VARCHAR(500)
+);
+
+----------------------------------------------------------
+-- 5) 조사지 질문(아이템)
+----------------------------------------------------------
+CREATE TABLE survey_item (
+  item_code        INT AUTO_INCREMENT PRIMARY KEY,
+  subsection_code  INT,          -- FK -> survey_subsection(subsection_code)
+  question_type    VARCHAR(20),
+  question_text    VARCHAR(2000),
+  is_required      CHAR(1) CHECK (is_required IN ('Y','N'))
+  option_values JSON NULL;  
+);
+
+----------------------------------------------------------
+-- 6) 조사지 제출본
+----------------------------------------------------------
+CREATE TABLE survey_submission (
+  submit_code        INT AUTO_INCREMENT PRIMARY KEY,
+  template_ver_code  INT,        -- FK -> survey_template_ver(template_ver_code)
+  submit_at          DATE,
+  updated_at         DATE,
+  written_by         INT,        -- FK -> users(user_code)
+  assi_by            INT,        -- FK -> users(user_code)
+  app_by             INT,        -- FK -> users(user_code)
+  status             VARCHAR(10),
+  app_at             DATE
+);
+
+----------------------------------------------------------
+-- 7) 조사지 답변
+----------------------------------------------------------
+CREATE TABLE survey_answer (
+  answer_code  INT AUTO_INCREMENT PRIMARY KEY,
+  item_code    INT,              -- FK -> survey_item(item_code)
+  submit_code  INT,              -- FK -> survey_submission(submit_code)
+  answer_text  TEXT,
+  created_at   DATE
+);
+
+----------------------------------------------------------
+-- 8) 상담
+----------------------------------------------------------
+CREATE TABLE counsel_note (
+  counsel_code  INT AUTO_INCREMENT PRIMARY KEY,
+  submit_code   INT,             -- FK -> survey_submission(submit_code)
+  counsel_date  DATE,
+  status        VARCHAR(10),
+  title         VARCHAR(200),
+  content       TEXT,
+  written_at    DATE,
+  attach_code   INT              -- FK -> attachment(attach_code)
+);
+
+----------------------------------------------------------
+-- 9) 우선순위
+----------------------------------------------------------
+CREATE TABLE case_priority (
+  priority_code  INT AUTO_INCREMENT PRIMARY KEY,
+  submit_code    INT,                 -- FK -> survey_submission(submit_code)
+  level          VARCHAR(10),
+  is_current     CHAR(1) CHECK (is_current IN ('Y','N'))
+);
+
+----------------------------------------------------------
+-- 10) 지원계획 헤더
+----------------------------------------------------------
+CREATE TABLE support_plan (
+  plan_code   INT AUTO_INCREMENT PRIMARY KEY,
+  submit_code INT,               -- FK -> survey_submission(submit_code)
+  plan_from   DATE,
+  plan_to     DATE,
+  status      VARCHAR(10),
+  written_at  DATE,
+  assi_by     INT                -- FK -> users(user_code)
+);
+
+----------------------------------------------------------
+-- 11) 지원계획 상세
+----------------------------------------------------------
+CREATE TABLE support_plan_item (
+  plan_item_code   INT AUTO_INCREMENT PRIMARY KEY,
+  plan_code        INT,          -- FK -> support_plan(plan_code)
+  item_title       VARCHAR(200),
+  content_for_user TEXT,
+  content_for_org  TEXT,
+  written_at       DATE,
+  attach_code      INT           -- FK -> attachment(attach_code)
+);
+
+----------------------------------------------------------
+-- 12) 지원결과 헤더
+----------------------------------------------------------
+CREATE TABLE support_result (
+  result_code  INT AUTO_INCREMENT PRIMARY KEY,
+  plan_code    INT,              -- FK -> support_plan(plan_code)
+  actual_from  DATE,
+  actual_to    DATE,
+  status       VARCHAR(10),
+  written_at   DATE,
+  assi_by      INT               -- FK -> users(user_code)
+);
+
+----------------------------------------------------------
+-- 13) 지원결과 상세
+----------------------------------------------------------
+CREATE TABLE support_result_item (
+  result_item_code  INT AUTO_INCREMENT PRIMARY KEY,
+  result_code       INT,         -- FK -> support_result(result_code)
+  item_title        VARCHAR(200),
+  content_for_user  TEXT,
+  content_for_org   TEXT,
+  written_at        DATE,
+  attach_code       INT          -- FK -> attachment(attach_code)
+);
+
+----------------------------------------------------------
+-- FK 제약
+----------------------------------------------------------
+ALTER TABLE survey_template_ver
+  ADD CONSTRAINT fk_stv_template
+      FOREIGN KEY (template_code) REFERENCES survey_template(template_code),
+  ADD CONSTRAINT fk_stv_created_by
+      FOREIGN KEY (created_by) REFERENCES users(user_code);
+
+ALTER TABLE survey_section
+  ADD CONSTRAINT fk_ssec_template_ver
+      FOREIGN KEY (template_ver_code) REFERENCES survey_template_ver(template_ver_code);
+
+ALTER TABLE survey_subsection
+  ADD CONSTRAINT fk_ssub_section
+      FOREIGN KEY (section_code) REFERENCES survey_section(section_code);
+
+ALTER TABLE survey_item
+  ADD CONSTRAINT fk_sitem_subsection
+      FOREIGN KEY (subsection_code) REFERENCES survey_subsection(subsection_code);
+
+ALTER TABLE survey_answer
+  ADD CONSTRAINT fk_sans_item
+      FOREIGN KEY (item_code) REFERENCES survey_item(item_code),
+  ADD CONSTRAINT fk_sans_submit
+      FOREIGN KEY (submit_code) REFERENCES survey_submission(submit_code);
+
+ALTER TABLE survey_submission
+  ADD CONSTRAINT fk_ssub_template_ver
+      FOREIGN KEY (template_ver_code) REFERENCES survey_template_ver(template_ver_code),
+  ADD CONSTRAINT fk_ssub_written_by
+      FOREIGN KEY (written_by) REFERENCES users(user_code),
+  ADD CONSTRAINT fk_ssub_assi_by
+      FOREIGN KEY (assi_by) REFERENCES users(user_code),
+  ADD CONSTRAINT fk_ssub_app_by
+      FOREIGN KEY (app_by) REFERENCES users(user_code);
+
+ALTER TABLE counsel_note
+  ADD CONSTRAINT fk_counsel_submit
+      FOREIGN KEY (submit_code) REFERENCES survey_submission(submit_code),
+  ADD CONSTRAINT fk_counsel_attach
+      FOREIGN KEY (attach_code) REFERENCES attachment(attach_code);
+
+ALTER TABLE case_priority
+  ADD CONSTRAINT fk_cprio_submit
+      FOREIGN KEY (submit_code) REFERENCES survey_submission(submit_code);
+
+ALTER TABLE support_plan
+  ADD CONSTRAINT fk_splan_submit
+      FOREIGN KEY (submit_code) REFERENCES survey_submission(submit_code),
+  ADD CONSTRAINT fk_splan_assi_by
+      FOREIGN KEY (assi_by) REFERENCES users(user_code);
+
+ALTER TABLE support_plan_item
+  ADD CONSTRAINT fk_splanitem_plan
+      FOREIGN KEY (plan_code) REFERENCES support_plan(plan_code),
+  ADD CONSTRAINT fk_splanitem_attach
+      FOREIGN KEY (attach_code) REFERENCES attachment(attach_code);
+
+ALTER TABLE support_result
+  ADD CONSTRAINT fk_sresult_plan
+      FOREIGN KEY (plan_code) REFERENCES support_plan(plan_code),
+  ADD CONSTRAINT fk_sresult_assi_by
+      FOREIGN KEY (assi_by) REFERENCES users(user_code);
+
+ALTER TABLE support_result_item
+  ADD CONSTRAINT fk_sresultitem_result
+      FOREIGN KEY (result_code) REFERENCES support_result(result_code),
+  ADD CONSTRAINT fk_sresultitem_attach
+      FOREIGN KEY (attach_code) REFERENCES attachment(attach_code);
+
+----------------------------------------------------------
+-- 편의 인덱스 (정렬/조회)
+----------------------------------------------------------
+CREATE INDEX ix_section_ver_only     ON survey_section(template_ver_code);
+CREATE INDEX ix_subsection_sec_only  ON survey_subsection(section_code);
+CREATE INDEX ix_item_subsec_only     ON survey_item(subsection_code);
+CREATE INDEX ix_planitem_plan_only   ON support_plan_item(plan_code);
+CREATE INDEX ix_resultitem_result_only ON support_result_item(result_code);

@@ -1,0 +1,59 @@
+/* ===========================
+   🎨 공통 파스텔 팔레트 (이미지 톤에 맞게 조정)
+   =========================== */
+
+/* 🔴 Red */
+.p-red {
+  background-color: #fab39f !important;
+  color: #8a2e2e !important;
+  border: 1px solid #e28f7f !important;
+}
+
+/* 🟠 Orange / Yellow-ish */
+.p-orange {
+  background-color: #fce8a1 !important;
+  color: #b0681b !important;
+  border: 1px solid #e6c77b !important;
+}
+
+/* 🟡 Yellow (조금 더 밝은 버전이 필요할 때) */
+.p-yellow {
+  background-color: #fff7d1 !important;
+  color: #a07c18 !important;
+  border: 1px solid #f3db85 !important;
+}
+
+/* 🟢 Green */
+.p-green {
+  background-color: #deeec8 !important;
+  color: #3f7a3a !important;
+  border: 1px solid #bedca0 !important;
+}
+
+/* 🔵 Blue */
+.p-blue {
+  background-color: #e4f0ff !important;
+  color: #476c99 !important;
+  border: 1px solid #a5c3da !important;
+}
+
+/* ⚪ Gray */
+.p-gray {
+  background-color: #e4e6e1 !important;
+  color: #4b5563 !important;
+  border: 1px solid #d0d3cd !important;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.32rem 0.75rem !important;
+  border-radius: 999px;
+  font-size: 13px !important;
+  font-weight: 500;
+  border: 1px solid transparent;
+  min-width: auto; /* 길이 강제하지 않음 */
+  line-height: 1.1; /* 더 콤팩트하게 */
+  height: auto;
+}

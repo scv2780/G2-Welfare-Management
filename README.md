@@ -257,9 +257,9 @@ server
 │    ├── 📄managerService.js                // 신청현황 서비스
 │    └── 📄orgService.js                    // 기관관리 서비스
 └── sql
-│    ├── 📄approvalSQL.js                   // 승인관련 쿼리
-│    ├── 📄authorityTransferSQL.js          // 권한이전 쿼리
-│    ├── 📄historySQL.js                    // 히스토리 쿼리
-│    ├── 📄managerSQL.js                    // 신청현황 쿼리
-│    └── 📄orgSQL.js                        // 기관관리 쿼리
+     ├── 📄approvalSQL.js                   // 승인관련 쿼리
+     ├── 📄authorityTransferSQL.js          // 권한이전 쿼리
+     ├── 📄historySQL.js                    // 히스토리 쿼리
+     ├── 📄managerSQL.js                    // 신청현황 쿼리
+     └── 📄orgSQL.js                        // 기관관리 쿼리
 ```

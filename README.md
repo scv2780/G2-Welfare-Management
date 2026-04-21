@@ -72,7 +72,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img  width="120" alt="image" src="https://github.com/Peinoi.png" />
+      <img width="120" alt="male" src="https://github.com/user-attachments/assets/4c713a36-ac69-4107-bf2e-e7de21af0f90" />
     </td>
     <td align="center">
       <img width="120" alt="female" src="https://github.com/user-attachments/assets/8d5708ba-b9f8-41e6-bd47-7c5e777a0088" />
@@ -121,39 +121,47 @@
 
 # 기관 관리 파트 
 
-본 프로젝트의 **기관 관리 시스템**은 복지 서비스 제공의 주체인 기관을 체계적으로 등록하고,  
-운영자가 **기관의 상태 및 승인 이력을 효율적으로 관리**할 수 있도록 설계된 모듈입니다.
+본 프로젝트의 **기관 관리 시스템**은 복지 서비스 제공의 주체인 기관을 등록하고,  
+시스템 관리자가 **기관을 관리**할 수 있으며,
+각 기관으로의 관리자/담당자 회원가입 **요청을 승인/반려**할 수 있습니다.
+ 
+지원관련 변경 이력은 **히스토리 시스템**을 통해 데이터의 투명성을 보장합니다.
 
-운영자는 **기관의 승인 요청을 검토**하여 승인/반려 처리를 할 수 있으며,  
-모든 변경 이력은 **히스토리 시스템**을 통해 데이터의 투명성을 보장합니다.
+## 주요 페이지 별 기능
 
-## 페이지 별 주요 기능
-
-### 기관 정보 및 히스토리 관리
+### 기관 관리
 <p align="center">
-  <img width="400" alt="기관 목록 조회" src="https://github.com/user-attachments/assets/9d7f1ab0-aadd-42f2-878c-248be270f3d2" />
-  <img width="400" alt="히스토리 상세" src="https://github.com/user-attachments/assets/70111fa3-a085-4af6-ad0c-760ecb8ee46f" />
+  <img width="1920" height="921" alt="가입 기관 관리" src="https://github.com/user-attachments/assets/1379f98e-8ebe-4db9-99f7-e84b10c95821" />
 </p>
 
-+ 시스템에 등록된 모든 복지 기관의 상태(대기/승인/반려)를 한눈에 파악할 수 있습니다.
-+ **데이터 매핑 로직:** DB의 복잡한 JSON 변경 이력 데이터를 파싱하여 사용자에게 직관적인 한글 컬럼명(예: status → 상태)으로 변환해 제공합니다.
++ 시스템에 등록된 모든 복지 기관의 상태(운영/임시중단/종료)를 한눈에 파악할 수 있습니다.
 + **Priority Mapping:** 특정 상태 코드를 가독성 있는 라벨로 즉시 치환하는 유틸리티 함수를 적용하여 관리 편의성을 높였습니다.
 
 ### 승인 요청 관리
 <p align="center">
- <img width="1892" height="946" alt="승인 요청 목록" src="https://github.com/user-attachments/assets/00baf5c5-49bd-4053-81a1-f48aadca71eb" />
+ <img width="500" alt="기관 관리자 승인" src="https://github.com/user-attachments/assets/e67ddb97-505f-46fb-923b-844f2d63c91a" />
+ <img width="500" alt="기관 담당자 승인" src="https://github.com/user-attachments/assets/c36c648c-76dd-4158-8737-92bd4e35dbea" />
 </p>
 
-+ 신규 기관의 파트너십 신청 건을 리스트로 확인하고 상세 검토가 가능합니다.
-+ 각 요청건에 대해 운영자가 승인 또는 반려 처리를 수행하며, 반려 시 사유를 기록하여 기관에 피드백을 전달합니다.
++ 기관 관리자와 기관 담당자의 회원가입 신청 건의 상태(요청/승인/반려)를 리스트로 확인 가능합니다.
++ 각 요청건에 대해 시스템 관리자와 기관 관리자가 승인 또는 반려 처리를 수행하며, 반려 시 사유를 기록하여 메일로 피드백을 전달합니다.
 
-### Git 형상 관리 및 개발 환경 구축
+### 권한 이전
 <p align="center">
-  <img width="400" alt="GitFlow" src="https://github.com/user-attachments/assets/c612559b-fe89-497b-a3d1-659f40ba0ff4" />
+  <img width="1920" height="920" alt="권한 이전" src="https://github.com/user-attachments/assets/e22b7ba3-9556-415a-bb42-488dd860890d" />
 </p>
 
-+ **Git Master:** 팀 프로젝트의 안정적인 코드 병합을 위해 Git Flow 전략을 수립하고, 브랜치 관리 및 충돌(Conflict) 해결을 주도했습니다.
-+ **환경 세팅:** 팀원들이 동일한 개발 환경에서 작업할 수 있도록 초기 Vue 및 Express 프로젝트 구조를 설계하고 공통 모듈을 배포했습니다.
++ 기관 관리자가 접근 가능하며 담당자를 선택해 담당하고 있는 이용자를 조회하고 선택하여 담당자를 변경 가능합니다.
+
+### 히스토리
+<p align="center">
+  <img width="1920" height="920" alt="히스토리" src="https://github.com/user-attachments/assets/5cb1edd5-d95f-4c90-b26b-21949129564b" />
+</p>
+
++ 시스템 관리자, 기관 관리자가 접근 가능하며 수정이력을 확인 가능합니다.
++ **데이터 매핑 로직:** DB의 복잡한 JSON 변경 이력 데이터를 파싱하여 사용자에게 직관적인 한글 컬럼명(예: status → 상태)으로 변환해 제공합니다.
+
+
 
 ---
 
@@ -205,19 +213,53 @@
   </table>
 </div>
 
-### MY Client / Server Architecture
+### MY Client
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center" valign="top">
-        <b>Admin Client</b><br/>
-        <img src="https://github.com/user-attachments/assets/1df461fb-a75a-4b8c-b069-7b18c7eb6911" width="420"/>
-      </td>
-      <td align="center" valign="top">
-        <b>Admin Server / DB</b><br/>
-        <img src="https://github.com/user-attachments/assets/4af643fa-17bf-4a9e-afb0-d4c9f4db072c" width="420"/>
-      </td>
-    </tr>
-  </table>
-</div>
+```text
+client
+ └── src
+      └── views (프론트엔드 핵심 화면 전담)
+          ├── 📄 ApplicationStatus.vue                // 신청현황
+          ├── 📄 AuthorityTransfer.vue                // 담당자 권한 이전
+          ├── 📄 EventPlanApproval.vue                // 이벤트 계획 승인 요청 목록
+          ├── 📄 EventResultApproval.vue              // 이벤트 결과 승인 요청 목록
+          ├── 📄 HistoryList.vue                      // 히스토리
+          ├── 📄 ManagerApprovals.vue                 // 관리자 승인 요청 목록
+          ├── 📄 Organization.vue                     // 기관관리
+          ├── 📄 PriorityApproval.vue                 // 우선순위 승인 요청 목록
+          ├── 📄 SponsorshipPlanApproval.vue          // 후원계획 승인 요청 목록
+          ├── 📄 SponsorshipResultApproval.vue        // 후원 결과 승인 요청 목록
+          ├── 📄 StaffApprovals.vue                   // 담당자 승인 요청 목록
+          ├── 📄 SupportPlanApproval.vue              // 지원계획 승인 요청 목록
+          └── 📄 SupportResultApproval.vue            // 지원결과 승인 요청 목록
+```
+
+### MY Server Architecture
+
+```text
+server
+├── mappers
+│    ├── 📄approvalMapper.js                // 승인관련 매퍼
+│    ├── 📄authorityTransferMapper.js       // 권한이전 매퍼
+│    ├── 📄historyMapper.js                 // 히스토리 매퍼
+│    ├── 📄managerMapper.js                 // 신청현황 매퍼
+│    └── 📄orgMapper.js                     // 기관관리 매퍼
+└── routes
+│    ├── 📄approvalRoute.js                 // 승인관련 라우팅
+│    ├── 📄authorityTransferRoute.js        // 권한이전 라우팅
+│    ├── 📄historyRoute.js                  // 히스토리 라우팅
+│    ├── 📄managerRoute.js                  // 신청현황 라우팅
+│    └── 📄orgRoute.js                      // 기관관리 라우팅
+└── services
+│    ├── 📄approvalService.js               // 승인관련 서비스
+│    ├── 📄authorityTransferService.js      // 권한이전 서비스
+│    ├── 📄historyService.js                // 히스토리 서비스
+│    ├── 📄managerService.js                // 신청현황 서비스
+│    └── 📄orgService.js                    // 기관관리 서비스
+└── sql
+│    ├── 📄approvalSQL.js                   // 승인관련 쿼리
+│    ├── 📄authorityTransferSQL.js          // 권한이전 쿼리
+│    ├── 📄historySQL.js                    // 히스토리 쿼리
+│    ├── 📄managerSQL.js                    // 신청현황 쿼리
+│    └── 📄orgSQL.js                        // 기관관리 쿼리
+```
